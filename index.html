@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>For You</title>
+  <meta name="theme-color" content="#faf6ef">
+  <meta name="description" content="A birthday website made with love.">
+
+  <!-- Fonts: elegant serif headlines + clean sans body. Falls back to Georgia / system fonts offline. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- Ambient background: soft blush light that follows the pointer -->
+  <div class="ambient" aria-hidden="true">
+    <span class="ambient__orb ambient__orb--a"></span>
+    <span class="ambient__orb ambient__orb--b"></span>
+    <span class="ambient__glow"></span>
+  </div>
+
+  <!-- Reusable flower graphic (pure SVG – no photos) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="flower" viewBox="0 0 100 100">
+        <g fill="currentColor">
+          <circle cx="50" cy="25" r="21"/>
+          <circle cx="75" cy="50" r="21"/>
+          <circle cx="50" cy="75" r="21"/>
+          <circle cx="25" cy="50" r="21"/>
+        </g>
+        <circle cx="50" cy="50" r="12" fill="var(--core, #e9b36f)"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- =====================================================
+       PAGE 1 — CODE ENTRY
+       The passcode itself lives in script.js (CONFIG.passcode).
+       ===================================================== -->
+  <section class="view view--gate" id="view-gate" data-view="enter" aria-labelledby="gate-title">
+    <div class="gate">
+      <div class="gate__card glass tilt" data-tilt data-tilt-max="8">
+        <div class="gate__lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="14" height="9" rx="2.5"/>
+            <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+          </svg>
+        </div>
+
+        <!-- EDIT: welcome text -->
+        <!-- <p class="eyebrow">A little something, for you</p> -->
+        <h1 class="display" id="gate-title" tabindex="-1">Enter the <em>passcode!</em></h1>
+        
+        <div class="lock-img">
+          <img class="billa" src="sign.jpeg" alt="">
+          <img class="billa" src="billa0.png" alt="">
+        </div>
+        
+        
+        <!-- <p class="lede">Type the secret word to open your birthday surprise.</p> -->
+
+        <form id="gate-form" class="gate__form" novalidate>
+          <label class="sr-only" for="passcode">Passcode</label>
+          <div class="slots" id="slots">
+            <!-- Slots are generated in script.js to match the passcode length -->
+            <input id="passcode" name="passcode" type="text" inputmode="text" autocomplete="off"
+                   autocapitalize="characters" spellcheck="false" aria-describedby="gate-hint gate-error">
+          </div>
+          <p class="gate__error" id="gate-error" role="alert" aria-live="assertive"></p>
+          <button class="btn btn--primary" type="submit">
+            <span>Open</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <!-- EDIT: hint text shown under the form -->
+        <p class="gate__hint" id="gate-hint">[Hint: The day that makes all the other days special.]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       PAGE 2 — MAIN BIRTHDAY PAGE
+       ===================================================== -->
+  <div class="view view--main" id="view-main" data-view="home" hidden>
+    <div class="progress" aria-hidden="true"><span></span></div>
+
+    <header class="nav" id="nav">
+      <div class="nav__bar glass">
+        <!-- EDIT: brand text -->
+        <a class="nav__brand" href="#wish" data-scroll="wish">17.10.2006</a>
+
+        <button class="nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
+
+        <nav class="nav__links" id="nav-links" aria-label="Sections">
+          <ul>
+            <li><a href="#wish" data-scroll="wish"><small>01</small>Wish</a></li>
+            <li><a href="#flowers" data-scroll="flowers"><small>02</small>Flowers</a></li>
+            <li><a href="#memories" data-scroll="memories"><small>03</small>Memories</a></li>
+            <li><a href="#secret" data-scroll="secret"><small>04</small>A Secret</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+
+      <!-- 01 — WISH (hero) -->
+      <section class="section hero" id="wish" aria-labelledby="wish-title">
+        <div class="hero__inner">
+          <div class="hero__copy reveal">
+            <!-- EDIT: hero text -->
+            <p class="eyebrow">Everyday</p>
+            <h1 class="display display--lg" id="wish-title" tabindex="-1">
+              <s>Today</s> is<br><em>all about you.</em>
+            </h1>
+            <p class="lede">To the person who makes life softer, brighter, and infinitely more beautiful just by existing.</p>
+            
+
+            <!-- Make a wish: the text floats away as a glowing orb and is also emailed to you via EmailJS (see CONFIG.emailjs in script.js). -->
+            <form class="wish" id="wish-form" autocomplete="off">
+              <label class="wish__label" for="wish-input">Make a wish </label>
+              <div class="wish__field glass">
+                <input id="wish-input" type="text" maxlength="60" placeholder="Who knows what might come true...">
+                <button class="wish__send" type="submit" aria-label="Send your wish into the sky">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                </button>
+              </div>
+              <p class="wish__note">Your wish floats away.</p>
+            </form>
+          </div>
+
+          <!-- Framed portrait.
+               EDIT IMAGE: replace main-page-photo.jpeg (keep it next to index.html)
+               and update the alt text to describe the photo. -->
+          <div class="hero__stage reveal">
+            <div class="portrait" id="portrait">
+              <span class="portrait__halo" aria-hidden="true"></span>
+              <div class="portrait__frame">
+                <img class="portrait__img" src="1.jpg" alt="Portrait of the birthday person" decoding="async">
+                <!-- <div class="placeholder" aria-hidden="true"><span>Add<br><b>main-page-photo.jpeg</b></span></div> -->
+              </div>
+              <span class="portrait__ring" aria-hidden="true"></span>
+              <span class="portrait__badge" aria-hidden="true"><img src="Bfly.png" alt=""></span>
+              <span class="portrait__spark portrait__spark--a" aria-hidden="true"></span>
+              <span class="portrait__spark portrait__spark--b" aria-hidden="true"></span>
+            </div>
+            <p class="hero__caption">Madam ji...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 — FLOWERS -->
+      <section class="section flowers" id="flowers" aria-labelledby="flowers-title">
+        <div class="flowers__inner">
+          <div class="flowers__copy reveal">
+            <p class="eyebrow eyebrow--light">A bouquet made in pixels</p>
+            <h2 class="display display--lg" id="flowers-title">Flowers that<br><em>never fade</em>
+            <img class="billa" src="Billa.png" alt="Billa"></h2>
+            <p class="lede lede--light">This bouquet lives here just for you. Watch it bloom, then touch a flower for a little sparkle.</p>
+            <div class="hero__actions">
+              <button class="btn btn--ghost" id="bloom-all" type="button" aria-pressed="false">Make it bloom</button>
+              <!-- <a class="link-arrow" href="#memories" data-scroll="memories">
+                Continue to memories
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a> -->
+            </div>
+            <!-- <img class="billa" src="Billa.png" alt="Billa"> -->
+          </div>
+
+          <div class="bouquet reveal" id="bouquet">
+            <div class="bouquet__disc" aria-hidden="true"></div>
+            <!-- The animated sunflower bouquet is drawn into this div by script.js -->
+            <div class="bq" id="bouquet-art"></div>
+            <div class="bouquet__ribbon" aria-hidden="true">Made just for you</div>
+            <!-- EDIT: message revealed when flowers bloom -->
+            <!-- <p class="bouquet__msg" aria-live="polite">You make everything bloom.</p> -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 — MEMORIES -->
+      <section class="section memories" id="memories" aria-labelledby="memories-title">
+        <div class="memories__inner">
+          <header class="section__head reveal">
+            <p class="eyebrow">An ode to your existence</p>
+            <h2 class="display display--lg" id="memories-title">A little more of <em>you to adore.</em></h2>
+            <p class="lede">Tap a photograph. There is a little more for you behind every frame.</p>
+          </header>
+
+          <!-- EDIT PHOTOS: put your own image path in data-src (e.g. "photos/one.jpg"),
+               set data-alt (description) and data-caption (text shown when opened).
+               Leave data-src empty to keep the placeholder. Add or remove cards freely. -->
+          <ul class="polaroids" role="list">
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="1.jpg" data-alt="" data-caption="There's a kind of beauty that doesn't ask to be noticed, yet somehow becomes impossible to look away from." style="--r:-4deg">
+              <span class="memory__img"><span class="placeholder"><img src="1.jpg"></span></span><span class="memory__no">01</span></button></li>
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="2.jpg" data-alt="" data-caption="Perhaps green was never this lovely, until it found its way to you." style="--r:3deg">
+              <span class="memory__img"><span class="placeholder"><img src="2.jpg"></span></span><span class="memory__no">02</span></button></li>
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="3.jpg" data-alt="" data-caption="Your smile, your hair, every little thing about you. somehow, words never seem enough" style="--r:-2deg">
+              <span class="memory__img"><span class="placeholder"><img src="3.jpg"></span></span><span class="memory__no">03</span></button></li>
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="6.jpg" data-alt="" data-caption="Zulfein aap sawarti ho bikhar hum jate hain" style="--r:4deg">
+              <span class="memory__img"><span class="placeholder"><img src="6.jpg"></span></span><span class="memory__no">04</span></button></li>
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="8.jpg" data-alt="" data-caption="I was looking for the moon, but somehow the night had something more beautiful to show me." style="--r:-3deg">
+              <span class="memory__img"><span class="placeholder"><img src="8.jpg"></span></span><span class="memory__no">05</span></button></li>
+            <li><button class="memory tilt" type="button" data-tilt data-tilt-max="10" data-src="9.jpg" data-alt="" data-caption="Madam ji aap bahut pyare lg rhe ho, isse jyada nhi bolunga." style="--r:2deg">
+              <span class="memory__img"><span class="placeholder"><img src="9.jpg"></span></span><span class="memory__no">06</span></button></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 04 — A SECRET -->
+      <section class="section secret" id="secret" aria-labelledby="secret-title">
+        <div class="secret__card glass tilt reveal" data-tilt data-tilt-max="7">
+          <div class="secret__lock" id="secret-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="9" rx="2.5"/>
+              <path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3"/>
+            </svg>
+          </div>
+          <p class="eyebrow">One final chapter</p>
+          <h2 class="display display--lg" id="secret-title">A story only <em>you can open.</em></h2>
+          <p class="lede">Some words are meant for one person only.</p>
+          <a class="btn btn--primary" id="open-story" href="#/story">
+            <span>Open the storybook</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p></p>
+      <a href="#/enter" id="lock-again"></a>
+    </footer>
+
+    <!-- Memory lightbox (native <dialog>: Esc closes, focus is trapped by the browser) -->
+    <dialog class="lightbox" id="lightbox" aria-label="Memory">
+      <form method="dialog" class="lightbox__inner">
+        <div class="lightbox__media" id="lightbox-media"></div>
+        <p class="lightbox__caption" id="lightbox-caption"></p>
+        <button class="lightbox__nav lightbox__nav--prev" id="lb-prev" type="button" aria-label="Previous photo">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="lightbox__nav lightbox__nav--next" id="lb-next" type="button" aria-label="Next photo">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <button class="lightbox__close" value="close" aria-label="Close photo">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </form>
+    </dialog>
+  </div>
+
+  <!-- =====================================================
+       PAGE 3 — STORYBOOK (placeholder)
+       Add or remove <article class="spread"> blocks. Each is one page.
+       ===================================================== -->
+  <div class="view view--story" id="view-story" data-view="story" hidden>
+    <header class="story__top">
+      <a class="link-back" href="#/home" id="story-back">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        Back
+      </a>
+      <p class="eyebrow">The storybook</p>
+      <span class="story__count" id="story-count" aria-live="polite">1 / 4</span>
+    </header>
+
+    <main class="story" id="story-main">
+      <h1 class="sr-only" id="story-title" tabindex="-1">Storybook</h1>
+
+      <div class="book glass" id="book" role="group" aria-roledescription="carousel" aria-label="Storybook pages">
+
+        <!-- EDIT: each spread = one photo area + one text area.
+             PHOTO: set data-src on the figure (e.g. data-src="photos/story-1.jpg") and data-alt.
+             TEXT : replace the eyebrow, title and paragraph. -->
+        <article class="spread is-current" aria-label="Page 1 of 4">
+          <figure class="spread__photo" data-src="" data-alt=""><span class="placeholder"><img src="5.jpg"></span></figure>
+          <div class="spread__text">
+            <p class="eyebrow">Chapter 01</p>
+            <h2 class="display display--md">Somewhere Along the Way</h2>
+            <p>Meeting you was my fate becoming friends was a choice but falling in love with you was way beyond my control</p>
+          </div>
+        </article>
+
+        <article class="spread" aria-label="Page 2 of 4" hidden>
+          <figure class="spread__photo" data-src="" data-alt=""><span class="placeholder"><img src="7.jpg"></span></figure>
+          <div class="spread__text">
+            <p class="eyebrow">Chapter 02</p>
+            <h2 class="display display--md">If Only You Knew</h2>
+            <p>I cherish every moment I've ever shared with you, no matter how small or insignificant it might have seemed. Every conversation, every little memory, every smile, and even the moments that probably meant nothing to you have found a special place in my heart. And if there's one thing I know, it's that I'll always be grateful that I got to experience those moments with you.</p>
+          </div>
+        </article>
+
+        <article class="spread" aria-label="Page 3 of 4" hidden>
+          <figure class="spread__photo" data-src="" data-alt=""><span class="placeholder"><img src="10.jpg"></span></figure>
+          <div class="spread__text">
+            <p class="eyebrow">Chapter 03</p>
+            <h2 class="display display--md">Bloom Beyond Your Dreams</h2>
+            <p>More than anything, I want to see you achieve everything you've ever dreamed of. I want to see you fly, go places you've always wanted to reach, and to see you at the top. I hope life gives you a thousand reasons to smile. And always do what you want to do, because more than anything, I want you to be happy with the life you choose for yourself, I hope you build a life that feels like your own, one that makes you happy in ways words could never explain.</p>
+          </div>
+        </article>
+
+        <!-- LAST CHAPTER: full-width text in a smaller box. The last line is a small italic "comment" note. -->
+        <article class="spread spread--last" aria-label="Page 4 of 4" hidden>
+          <!-- <figure class="spread__photo" data-src="" data-alt=""><span class="placeholder"><span>Photo area</span></span></figure> -->
+          <div class="spread__text">
+            <!-- <p class="eyebrow">Chapter 04</p> -->
+            <h2 class="display display--md">Madam ji..</h2>
+            <p>Madamji  is used to just a word for me until I found you. But with you , somehow, madamji  started meaning something more to me . It's no longer just a word, maybe it sounds like a small thing, but to me it means a lot , and i guess that's one of the many little things about knowing you that i'll  always be grateful for. It's funny how someone can give an entirely new meaning to something so ordinary, without even realising it .
+            <br>So, Madamji, I'm glad that somewhere along the way, you became my madamji.</p>
+            <p>Madam ji wishing you very very veeerrryyy haaapppyyy birthday.</p>
+            <p class="spread__note">[A hard copy of something like this will be provided to you soon.]</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="story__controls">
+        <button class="btn btn--round" id="story-prev" type="button" aria-label="Previous page">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <div class="dots" id="story-dots" role="tablist" aria-label="Choose a page"></div>
+        <button class="btn btn--round" id="story-next" type="button" aria-label="Next page">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <!-- <p class="story__hint">Use the arrow keys, swipe, or the buttons to turn the page.</p> -->
+    </main>
+  </div>
+
+  <!-- Interactive layer: confetti canvas, cursor ring, floating wishes, quick-action dock -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="wish-sky" id="wish-sky" aria-hidden="true"></div>
+  <p class="sr-only" id="live" role="status" aria-live="polite"></p>
+
+  <div class="dock" id="dock" hidden>
+    <button class="dock__btn" id="celebrate" type="button" aria-label="Celebrate — launch confetti">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16v4M17 18h4"/></svg>
+    </button>
+    <button class="dock__btn" id="sound-toggle" type="button" aria-pressed="false" aria-label="Sound effects off">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/><path class="slash" d="M3 3l18 18"/></svg>
+    </button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
